@@ -13,7 +13,8 @@ export interface TransferData {
   key: string;
   siteUrl: string;
   fileId: string;
-  fileMetadataId: string;
+  fileStorageId: string;
+  fileName: string;
   storePrefix: string;
 }
 

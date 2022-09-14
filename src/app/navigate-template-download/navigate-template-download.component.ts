@@ -101,6 +101,16 @@ export class NavigateTemplateDownloadComponent implements OnInit, OnChanges {
               }
           );
     }
+    if(typeof this.transferData.fileId !== 'undefined') {
+      const newPart = {
+            name: this.transferData.fileId,
+            storageIdentifier: this.transferData.fileStorageId,
+            children: [],
+          }
+          this.selectedFiles.push(newPart);
+          
+          
+    }
   }
 
   findDirectories(data) {

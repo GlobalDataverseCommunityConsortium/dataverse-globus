@@ -140,27 +140,31 @@ export class InterfaceComponent implements OnInit {
         this.transferData.datasetVersion = this.globusService.getParameterByName('datasetVersion');
         this.dvLocale = this.globusService.getParameterByName('dvLocale');
         this.transferData.fileId = this.globusService.getParameterByName('fileId');
-        this.transferData.fileMetadataId = this.globusService.getParameterByName('fileMetadataId');
+        this.transferData.fileStorageId = this.globusService.getParameterByName('storageIdentifier');
+        this.transferData.fileName = this.globusService.getParameterByName('fileName');
         this.transferData.storePrefix = this.globusService.getParameterByName('storePrefix');
         console.log(this.transferData.datasetVersion);
     }
     encodeStateDataset() {
-        const state = btoa(this.transferData.datasetPid + '_'
-            + this.transferData.key + '_'
-            + this.transferData.siteUrl + '_'
-            + this.transferData.datasetId + '_'
-            + this.transferData.datasetVersion + '_'
-            + this.transferData.storePrefix + '_'
+        const state = btoa(this.transferData.datasetPid + '_::_'
+            + this.transferData.key + '_::_'
+            + this.transferData.siteUrl + '_::_'
+            + this.transferData.datasetId + '_::_'
+            + this.transferData.datasetVersion + '_::_'
+            + this.transferData.storePrefix + '_::_'
             + this.dvLocale); // encode
         return state;
     }
     encodeStateFile() {
-        const state = btoa(this.transferData.key + '_'
-            + this.transferData.siteUrl + '_'
-            + this.transferData.fileId + '_'
-            + this.transferData.fileMetadataId + '_'
-            + this.transferData.datasetVersion + '_'
-            + this.transferData.storePrefix + '_'
+        const state = btoa(this.transferData.key + '_::_'
+            + this.transferData.siteUrl + '_::_'
+            + this.transferData.fileId + '_::_'
+            + this.transferData.fileStorageId + '_::_'
+            + this.transferData.fileName + '_::_'
+            + this.transferData.datasetId + '_::_'
+             + this.transferData.datasetPid + '_::_'
+            + this.transferData.datasetVersion + '_::_'
+            + this.transferData.storePrefix + '_::_'
             + this.dvLocale); // encode
         return state;
     }
@@ -168,7 +172,7 @@ export class InterfaceComponent implements OnInit {
         const state = this.globusService.getParameterByName('state');
         const decodedState = atob(state);
         console.log(decodedState);
-        const parameters = decodedState.split('_');
+        const parameters = decodedState.split('_::_');
         this.transferData.datasetPid = parameters[0];
         this.transferData.siteUrl = parameters[2];
         console.log(this.transferData.datasetPid);
@@ -190,19 +194,28 @@ export class InterfaceComponent implements OnInit {
         const state = this.globusService.getParameterByName('state');
         const decodedState = atob(state);
         console.log(decodedState);
-        const parameters = decodedState.split('_');
+        const parameters = decodedState.split('_::_');
         this.transferData.siteUrl = parameters[1];
         console.log(this.transferData.siteUrl);
         console.log(this.transferData.siteUrl);
         this.transferData.fileId = parameters[2];
         console.log(this.transferData.fileId);
-        this.transferData.fileMetadataId = parameters[3];
-        console.log(this.transferData.fileMetadataId);
-        this.transferData.datasetVersion = parameters[4];
+        this.transferData.fileStorageId = parameters[3];
+        console.log(this.transferData.fileStorageId);
+        this.transferData.fileName = parameters[4];
+        console.log(this.transferData.fileName);
+        this.transferData.datasetId = parameters[5];
+        console.log(this.transferData.datasetId);
+        this.transferData.datasetPid = parameters[6];
+        console.log(this.transferData.datasetPid);
+        this.transferData.datasetVersion = parameters[7];
         console.log(this.transferData.datasetVersion);
-        this.transferData.storePrefix = parameters[5];
-        this.dvLocale = parameters[6];
+        this.transferData.storePrefix = parameters[8];
+        this.dvLocale = parameters[9];
         console.log(this.dvLocale);
+        this.transferData.datasetDirectory = this.config.includeBucketInPath ? ('/' + this.transferData.storePrefix.substring(this.transferData.storePrefix.indexOf('://') + 3, this.transferData.storePrefix.length -1) + '/') : '/';
+        this.transferData.datasetDirectory = this.transferData.datasetDirectory + this.transferData.datasetPid.substring(this.transferData.datasetPid.indexOf(':') + 1) + '/';
+        
         this.transferData.key = parameters[0];
     }
 }
