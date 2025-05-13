@@ -98,7 +98,7 @@ export class GlobusService {
   }
 
   getClientToken(basicGlobusToken) {
-    const url = 'https://auth.globus.org/v2/oauth2/token?scope=openid+email+profile+urn:globus:auth:scope:transfer.api.globus.org:all&grant_type=client_credentials';
+    const url = 'https://auth.globus.org/v2/oauth2/token?scope=openid+email+profile+urn:globus:auth:scope:transfer.api.globus.org:all[*https://auth.globus.org/scopes/8914e42f-167b-4bb4-bb4f-892505a04eef/data_access]&grant_type=client_credentials';
 
     const key = 'Basic ' + basicGlobusToken;
     return this.postGlobus(url, '', key);
